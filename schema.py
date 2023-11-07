@@ -3,10 +3,11 @@ from typing import List
 from definitions.users import User
 from definitions.tracks import Track
 from definitions.spotifyartist import SpotifyArtist
+from definitions.ideas import Idea
 from services.tracks import read_tracks
 from services.user import read_users
 from services.artist import read_artists
-
+from services.idea import read_ideas
 # Define the root resolver
 @strawberry.type
 class Query:
@@ -29,9 +30,11 @@ class Query:
             new_lst.append(art)
         return new_lst
     
-    # @strawberry.field
-    # def user(self, id: int) -> User:
-    #     return None
+    @strawberry.field
+    def ideas(self) -> List[Idea]:
+        users = read_ideas()
+        return users
+    
 
 
 # @strawberry.type
