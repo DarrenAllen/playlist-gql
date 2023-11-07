@@ -24,7 +24,7 @@ class Query:
     def spotifyartists(self) -> List[SpotifyArtist]:
         artists = read_artists()
         new_lst = []
-        for i in artists: # lst is the list that contains the data
+        for i in artists:
             art = SpotifyArtist(i)
             new_lst.append(art)
         return new_lst

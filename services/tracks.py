@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException, status
 from models.tracks import Tracks
 from models.user import Users
+from models.artist import Artists
 from sqlmodel import select
 from database import get_session
-
+from services.artist import flatten_artists
 def read_tracks():
     db = next(get_session())
     tracks = db.exec(select(Tracks)).all()
@@ -20,6 +21,15 @@ def get_added_by_from_track(track:object):
     return user
 
 def get_artists_from_track(track:object):
+    artist_uri = track['track']['artists'][0]['uri']
+
+    db = next(get_session())
+    artist = db.exec(select(Artists).where(Artists.uri == artist_uri)).first()
+
+    return [flatten_artists(artist)]
+    
+
+def old_get_artists_from_track(track:object):
     artists = track['track']['artists']
     
     def to_artist(artist: dict):
@@ -35,3 +45,4 @@ def get_artists_from_track(track:object):
         return newArt
         
     return map(to_artist, artists)
+

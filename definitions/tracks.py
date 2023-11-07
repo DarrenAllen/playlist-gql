@@ -1,6 +1,6 @@
 import strawberry
 from definitions.users import User
-from definitions.artists import Artist
+from definitions.spotifyartist import SpotifyArtist
 from services.tracks import get_added_by_from_track, get_artists_from_track
 from typing import List
 
@@ -16,9 +16,13 @@ class Track:
         return user
     
     @strawberry.field
-    def artists(self) -> List[Artist]:
-        user = get_artists_from_track(self.track)
-        return user
+    def artists(self) -> List[SpotifyArtist]:
+        artists = get_artists_from_track(self.track)
+        new_lst = []
+        for i in artists:
+            art = SpotifyArtist(i)
+            new_lst.append(art)
+        return new_lst
 
     # analysis: object
     # features: object
